@@ -1,12 +1,12 @@
 {
   "name": "atom-copy-on-select",
   "main": "./lib/atom-copy-on-select",
-  "version": "0.0.0",
-  "description": "A short description of your package",
+  "version": "0.1.0",
+  "description": "Selecting text automatically copies it to the clipboard",
   "activationCommands": {
     "atom-workspace": "atom-copy-on-select:toggle"
   },
-  "repository": "https://github.com/atom/atom-copy-on-select",
+  "repository": "https://github.com/mndrix/atom-copy-on-select",
   "license": "MIT",
   "engines": {
     "atom": ">0.50.0"
