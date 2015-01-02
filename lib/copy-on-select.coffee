@@ -15,7 +15,7 @@ module.exports = AtomCopyOnSelect =
             if /^\s*$/.test(text) then return
 
             atom.clipboard.write(text)
-            console.log("Copying to clipboard: " + text)
+            console.log("Copied: " + text)
 
   deactivate: ->
     @subscriptions.dispose()
