@@ -1,8 +1,8 @@
 {
   "name": "copy-on-select",
   "main": "./lib/copy-on-select",
-  "version": "0.1.0",
-  "description": "Selecting text automatically copies it to the clipboard",
+  "version": "0.0.0",
+  "description": "Automatically copy selected text to the clipboard",
   "repository": "https://github.com/mndrix/atom-copy-on-select",
   "license": "MIT",
   "engines": {
