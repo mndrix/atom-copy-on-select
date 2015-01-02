@@ -1,33 +1,21 @@
-AtomCopyOnSelectView = require './atom-copy-on-select-view'
 {CompositeDisposable} = require 'atom'
 
 module.exports = AtomCopyOnSelect =
-  atomCopyOnSelectView: null
-  modalPanel: null
   subscriptions: null
 
-  activate: (state) ->
-    @atomCopyOnSelectView = new AtomCopyOnSelectView(state.atomCopyOnSelectViewState)
-    @modalPanel = atom.workspace.addModalPanel(item: @atomCopyOnSelectView.getElement(), visible: false)
-
-    # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
-    @subscriptions = new CompositeDisposable
-
+  activate: ->
     # Register command that toggles this view
-    @subscriptions.add atom.commands.add 'atom-workspace', 'atom-copy-on-select:toggle': => @toggle()
+    @subscriptions = atom.workspace.observeTextEditors (editor) =>
+        editor.onDidChangeSelectionRange (event) ->
+            sel = event.selection
+            if sel.isEmpty() then return
+
+            text = sel.getText()
+            if text == "" then return
+            if /^\s*$/.test(text) then return
+
+            atom.clipboard.write(text)
+            console.log("Copying to clipboard: " + text)
 
   deactivate: ->
-    @modalPanel.destroy()
     @subscriptions.dispose()
-    @atomCopyOnSelectView.destroy()
-
-  serialize: ->
-    atomCopyOnSelectViewState: @atomCopyOnSelectView.serialize()
-
-  toggle: ->
-    console.log 'AtomCopyOnSelect was toggled!'
-
-    if @modalPanel.isVisible()
-      @modalPanel.hide()
-    else
-      @modalPanel.show()
