@@ -1,4 +1,5 @@
 {CompositeDisposable} = require 'atom'
+{$} = require 'atom-space-pen-views'
 
 module.exports = CopyOnSelect =
   subscriptions: new CompositeDisposable
@@ -6,16 +7,18 @@ module.exports = CopyOnSelect =
   activate: ->
     # Register command that toggles this view
     @subscriptions.add atom.workspace.observeTextEditors (editor) =>
-        @subscriptions.add editor.onDidChangeSelectionRange (event) ->
-            sel = event.selection
-            if sel.isEmpty() then return
+        editorView = atom.views.getView(editor)
+        $(editorView).on 'mouseup.copy-on-select', (event) ->
+            if event.which != 1 then return
 
-            text = sel.getText()
+            text = editor.getSelectedText()
             if text == "" then return
             if /^\s*$/.test(text) then return
-
             atom.clipboard.write(text)
             console.log("Copied: " + text)
 
   deactivate: ->
     @subscriptions.dispose()
+    for editor in atom.workspace.getTextEditors()
+        editorView = atom.views.getView(editor)
+        $(editorView).off('.copy-on-select')
