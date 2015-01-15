@@ -1,6 +1,6 @@
 {CompositeDisposable} = require 'atom'
 
-module.exports = AtomCopyOnSelect =
+module.exports = CopyOnSelect =
   subscriptions: null
 
   activate: ->
