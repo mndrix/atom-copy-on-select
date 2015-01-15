@@ -1,12 +1,12 @@
 {CompositeDisposable} = require 'atom'
 
 module.exports = CopyOnSelect =
-  subscriptions: null
+  subscriptions: new CompositeDisposable
 
   activate: ->
     # Register command that toggles this view
-    @subscriptions = atom.workspace.observeTextEditors (editor) =>
-        editor.onDidChangeSelectionRange (event) ->
+    @subscriptions.add atom.workspace.observeTextEditors (editor) =>
+        @subscriptions.add editor.onDidChangeSelectionRange (event) ->
             sel = event.selection
             if sel.isEmpty() then return
 
